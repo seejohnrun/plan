@@ -80,7 +80,7 @@ module Plan
       # list things at a certain depth
       def list(paths)
         item = path_tree.descend(paths)
-        if item.children.empty?
+        if item.visible_child_count == 0
           raise Plan::Advice.new 'no events here - create some with `plan create`'
         end
         print_depth item
@@ -94,7 +94,7 @@ module Plan
         # descend to the right depth
         item = path_tree.descend(paths[0..-2])
         # and then create
-        if item.children.any? { |c| c.has_label?(paths[-1]) }
+        if item.children.any? { |c| !c.hidden? && c.has_label?(paths[-1]) }
           raise Plan::Advice.new "duplicate entry at level: #{paths[-1]}"
         else
           item.children << Item.new(paths[-1])
