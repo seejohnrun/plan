@@ -90,7 +90,7 @@ The dates you finish things will show up in `list` calls, until you run `cleanup
 $ plan list open
 open-source
 -- something (finished)
-$ plan clean open
+$ plan cleanup open
 open-source
 ```
 
@@ -102,10 +102,10 @@ By default, `plan` stores its data in `~/plan` (`$HOME/plan`) - to change that j
 $ export PLAN_DATA_PATH="/some/location"
 ```
 
-### Author
+## Author
 
 [John Crepezzi](http://seejohncode.com)
 
-### License
+## License
 
 MIT License (See attached `LICENSE` file)
