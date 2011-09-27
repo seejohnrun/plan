@@ -32,14 +32,21 @@ module Plan
         end
       end
 
+      COMMAND_GLOSSARY = {
+        'create' => 'create a new item',
+        'list' => 'list items',
+        'finish' => 'mark an item finished',
+        'unfinish' => 'mark an item unfinished',
+        'cleanup' => 'remove finished items from view',
+        'help' => 'display a list of commands'
+      }
+
       # display a list of help
       def help
-        puts "\e[0;33mcreate\e[0m - create a new item"
-        puts "\e[0;33mlist\e[0m - list items"
-        puts "\e[0;33mfinish\e[0m - mark an item finished"
-        puts "\e[0;33munfinish\e[0m - mark an item unfinished"
-        puts "\e[0;33mcleanup\e[0m - remove finished items from view"
-        puts "\e[0;33mhelp\e[0m - display this list"
+        puts "plan #{Plan::VERSION} - john crepezzi - http://github.com/seejohnrun/plan"
+        COMMAND_GLOSSARY.each do |cmd, description|
+          puts "\e[0;33m#{cmd}\e[0m - #{description}"
+        end
       end
 
       # Remove all finished items that are descendents

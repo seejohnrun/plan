@@ -93,7 +93,7 @@ module Plan
     # Load a Item from a data hash
     def self.load(data)
       item = Item.new data['label'], data['finished'], data['hidden']
-      data['children'].each do |child|
+      data['children'] && data['children'].each do |child|
         item.children << Item.load(child) 
       end
       item
