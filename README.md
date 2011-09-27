@@ -1,6 +1,6 @@
 # Plan
 
-Plan is a simple command-line TODO manager written for [CodeBrawl](http://codebrawl.com/contests/command-line-todo-lists).  It takes a heirarchial approach to managing TODOs, so you can openly group items into projects.
+Plan is a simple command-line TODO manager.  It takes a heirarchial approach to managing TODOs, so you can openly group items into projects.
 
 ## Intallation
 
