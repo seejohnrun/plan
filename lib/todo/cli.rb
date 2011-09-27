@@ -95,6 +95,8 @@ module Todo
 
       private
 
+      DATA_STORE = 'data'
+
       def unknown_command(cmd)
         puts "unknown command: #{cmd}"
       end
@@ -113,17 +115,17 @@ module Todo
 
       # Save any changes to the tree
       def save_path_tree
-        file = File.open("data", 'w')
+        file = File.open(DATA_STORE, 'w')
         file.write path_tree.dump.to_json
         file.close
       end
 
       # Get the path tree from the data file
       def path_tree
-        @path_tree ||= if File.exists?('data')
-          Item.load JSON.parse(File.read('data'))
+        @path_tree ||= if File.exists?(DATA_STORE)
+          Item.load JSON.parse(File.read(DATA_STORE))
         else
-          Item.new 'todo'
+          Item.new 'root'
         end
       end
 
