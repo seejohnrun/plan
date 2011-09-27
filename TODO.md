@@ -1,3 +1,2 @@
 * finish todos
-* gemify
 * tests
