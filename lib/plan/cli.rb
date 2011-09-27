@@ -64,7 +64,7 @@ module Plan
       # Mark a task or group of tasks as "finished"
       def finish(paths)
         if paths.empty?
-          puts 'please drill down to a level to unfinish'
+          puts 'please drill down to a level to finish'
           exit
         end
         # descend and finish
