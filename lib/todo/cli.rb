@@ -43,6 +43,8 @@ module Todo
         item = path_tree.descend(paths)
         item.cleanup  
         save_path_tree
+        # print what happened here
+        print_depth item
       end
 
       # Mark a task or group of tasks as "unfinished"
@@ -55,6 +57,8 @@ module Todo
         item = path_tree.descend(paths)
         item.unfinish!
         save_path_tree
+        # print what happened here
+        print_depth item
       end
 
       # Mark a task or group of tasks as "finished"
@@ -67,12 +71,14 @@ module Todo
         item = path_tree.descend(paths)
         item.finish!
         save_path_tree
+        # print what happened here
+        print_depth item
       end
 
       # list things at a certain depth
       def list(paths)
         item = path_tree.descend(paths)
-        list_recur_print(item)
+        print_depth item
       end
 
       # create a new todo
@@ -86,10 +92,12 @@ module Todo
         # and then create
         if item.children.any? { |c| c.has_label?(paths[-1]) }
           puts "duplicate entry at level: #{paths[-1]}"
+          exit
         else
           item.children << Item.new(paths[-1])
           save_path_tree
-          list_recur_print item # show the added item in context
+          # and say what happened
+          print_depth item
         end
       end
 
@@ -103,15 +111,26 @@ module Todo
         exit
       end
 
-      # Used by #list to print its tree
+      # print the item and its descendents
+      def print_depth(item)
+        print_item item, 0
+        list_recur_print item, 2
+      end
+
+      # Used by #print_depth to print its tree
       def list_recur_print(item, desc = 0)
         item.children.each do |child|
-          if child.finished?
-            puts "#{'-' * desc}#{desc > 0 ? " #{child.label}" : child.label} (finished @ #{child.finished})"
-          else
-            puts "#{'-' * desc}#{desc > 0 ? " #{child.label}" : child.label}"
-          end
+          print_item child, desc
           list_recur_print(child, desc + 2)
+        end
+      end
+
+      # output an individual item
+      def print_item(item, desc = 0)
+        if item.finished?
+          puts "#{'-' * desc}#{desc > 0 ? " #{item.label}" : item.label} (finished @ #{item.finished})"
+        else
+          puts "#{'-' * desc}#{desc > 0 ? " #{item.label}" : item.label}"
         end
       end
 
