@@ -72,7 +72,7 @@ module Todo
       # list things at a certain depth
       def list(paths)
         item = path_tree.descend(paths)
-        list_recur_print(item, 0)
+        list_recur_print(item)
       end
 
       # create a new todo
@@ -82,7 +82,6 @@ module Todo
           exit
         end
         # descend to the right depth
-        # TODO report back on what was created
         item = path_tree.descend(paths[0..-2])
         # and then create
         if item.children.any? { |c| c.has_label?(paths[-1]) }
@@ -90,6 +89,7 @@ module Todo
         else
           item.children << Item.new(paths[-1])
           save_path_tree
+          list_recur_print item # show the added item in context
         end
       end
 
@@ -99,6 +99,8 @@ module Todo
 
       def unknown_command(cmd)
         puts "unknown command: #{cmd}"
+        puts 'try `todo help`'
+        exit
       end
 
       # Used by #list to print its tree

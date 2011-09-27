@@ -6,7 +6,7 @@ module Todo
       
     # Create a new item
     def initialize(label, finished = nil)
-      @label = label
+      @label = label.strip
       @finished = finished
       @children = []
     end
