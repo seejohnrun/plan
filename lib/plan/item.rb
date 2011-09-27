@@ -64,19 +64,21 @@ module Plan
       end
       # give an error if we have no matches
       if next_items.empty?
-        puts "no patch match for #{paths.first}"
+        lines = []
+        lines << "no match for #{paths.first}"
         unless children.empty?
-          puts "available options are: #{children.map(&:label).join(', ')}"
+          lines << "available options are: #{children.map(&:label).join(', ')}"
         end
-        exit 1
+        raise Plan::Advice.new *lines
       end
       # give an error if we have too many matches
       if next_items.count > 1
-        puts "ambiguous match for #{paths.first} - please choose one of:"
+        lines = []
+        lines << "ambiguous match for '#{paths.first}' - please choose one of:"
         next_items.each do |np|
-          puts "* #{np}"
+          lines << "* #{np.label}"
         end
-        exit 1
+        raise Plan::Advice.new *lines
       end 
       # and off we go, continuing to descent
       next_items.first.descend(paths[1..-1])

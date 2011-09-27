@@ -8,15 +8,20 @@ module Plan
 
       # TODO colors
       def run(args)
-        if args.count > 0
+        begin
           command args.first, args[1..-1]
-        else
-          list []
+        rescue Plan::Advice => e
+          e.lines.each do |line|
+            puts "\e[31m[uh-oh]\e[0m #{line}"
+          end
         end
       end
 
       # decide what to do
       def command(command, paths)
+        # default is list
+        return list([]) if command.nil?
+        # choose other command
         case command
         when 'create' then create paths
         when 'list' then list paths
@@ -30,12 +35,12 @@ module Plan
 
       # display a list of help
       def help
-        puts 'create - create a new item'
-        puts 'list - list items'
-        puts 'finish - mark an item finished'
-        puts 'unfinish - mark an item unfinished'
-        puts 'cleanup - remove finished items from view'
-        puts 'help - display this list'
+        puts "\e[0;33mcreate\e[0m - create a new item"
+        puts "\e[0;33mlist\e[0m - list items"
+        puts "\e[0;33mfinish\e[0m - mark an item finished"
+        puts "\e[0;33munfinish\e[0m - mark an item unfinished"
+        puts "\e[0;33mcleanup\e[0m - remove finished items from view"
+        puts "\e[0;33mhelp\e[0m - display this list"
       end
 
       # Remove all finished items that are descendents
@@ -50,8 +55,7 @@ module Plan
       # Mark a task or group of tasks as "unfinished"
       def unfinish(paths)
         if paths.empty?
-          puts 'please drill down to a level to unfinish'
-          exit
+          raise Plan::Advice.new 'please drill down to a level to unfinish'
         end
         # go to the right depth and unfinish
         item = path_tree.descend(paths)
@@ -64,8 +68,7 @@ module Plan
       # Mark a task or group of tasks as "finished"
       def finish(paths)
         if paths.empty?
-          puts 'please drill down to a level to finish'
-          exit
+          raise Plan::Advice.new 'please drill down to a level to finish'
         end
         # descend and finish
         item = path_tree.descend(paths)
@@ -78,21 +81,22 @@ module Plan
       # list things at a certain depth
       def list(paths)
         item = path_tree.descend(paths)
+        if item.children.empty?
+          raise Plan::Advice.new 'no events here - create some with `plan create`'
+        end
         print_depth item
       end
 
       # create a new todo
       def create(paths)
         if paths.empty?
-          puts 'please provide something to create'
-          exit
+          raise Plan::Advice.new 'please provide something to create'
         end
         # descend to the right depth
         item = path_tree.descend(paths[0..-2])
         # and then create
         if item.children.any? { |c| c.has_label?(paths[-1]) }
-          puts "duplicate entry at level: #{paths[-1]}"
-          exit
+          raise Plan::Advice.new "duplicate entry at level: #{paths[-1]}"
         else
           item.children << Item.new(paths[-1])
           save_path_tree
@@ -106,9 +110,7 @@ module Plan
       DATA_STORE = ENV['PLAN_DATA_PATH'] || "#{ENV['HOME']}/plan"
 
       def unknown_command(cmd)
-        puts "unknown command: #{cmd}"
-        puts 'try `todo help`'
-        exit
+        raise Plan::Advice.new "unknown command: #{cmd}. try `plan help` for options."
       end
 
       # print the item and its descendents
@@ -146,7 +148,7 @@ module Plan
         @path_tree ||= if File.exists?(DATA_STORE)
           Item.load JSON.parse(File.read(DATA_STORE))
         else
-          Item.new 'root'
+          Item.new 'plan'
         end
       end
 
