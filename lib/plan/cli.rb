@@ -103,7 +103,7 @@ module Plan
 
       private
 
-      DATA_STORE = 'data'
+      DATA_STORE = ENV['TODO_PATH'] || "#{ENV['HOME']}/todo"
 
       def unknown_command(cmd)
         puts "unknown command: #{cmd}"
