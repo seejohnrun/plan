@@ -1,4 +1,4 @@
-module Todo
+module Plan
 
   class Item
 

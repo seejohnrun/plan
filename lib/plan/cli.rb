@@ -1,6 +1,6 @@
 require 'json'
 
-module Todo
+module Plan
 
   class CLI
 

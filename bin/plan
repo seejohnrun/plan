@@ -1,0 +1,4 @@
+#!/usr/bin/env ruby
+
+require File.dirname(__FILE__) + '/../lib/plan'
+Plan::CLI.run(ARGV)
