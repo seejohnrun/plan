@@ -89,7 +89,7 @@ The dates you finish things will show up in `list` calls, until you run `cleanup
 ``` bash
 $ plan list open
 open-source
---- something (finished)
+-- something (finished)
 $ plan clean open
 open-source
 ```
