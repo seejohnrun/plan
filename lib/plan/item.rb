@@ -88,7 +88,7 @@ module Plan
     def self.load(data)
       item = Item.new data['label'], data['finished']
       data['children'].each do |child|
-        next if child['hidden']
+        next if child['hidden'] # don't bother for now
         item.children << Item.load(child) 
       end
       item

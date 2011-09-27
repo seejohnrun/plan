@@ -115,6 +115,7 @@ module Plan
 
       # print the item and its descendents
       def print_depth(item)
+        return if item.hidden?
         print_item item, 0
         list_recur_print item, 2
       end
@@ -122,6 +123,7 @@ module Plan
       # Used by #print_depth to print its tree
       def list_recur_print(item, desc = 0)
         item.children.each do |child|
+          next if child.hidden?
           print_item child, desc
           list_recur_print(child, desc + 2)
         end
