@@ -9,6 +9,7 @@ spec = Gem::Specification.new do |s|
   s.email = 'john.crepezzi@gmail.com'
   s.files = Dir['lib/**/*.rb', 'bin/plan']
   s.bindir = 'bin'
+  s.executables = ['plan']
   s.homepage = 'http://github.com/seejohnrun/plan'
   s.platform = Gem::Platform::RUBY
   s.require_paths = ['lib']
