@@ -130,9 +130,9 @@ module Plan
       # output an individual item
       def print_item(item, desc = 0)
         if item.finished?
-          puts "#{'-' * desc}#{desc > 0 ? " #{item.label}" : item.label} (finished @ #{item.finished})"
+          puts "\e[1;30m#{'-' * desc}#{desc > 0 ? " #{item.label}" : item.label} \e[1;31m(finished @ #{item.finished})\e[0m"
         else
-          puts "#{'-' * desc}#{desc > 0 ? " #{item.label}" : item.label}"
+          puts "\e[1;30m#{'-' * desc}\e[0m#{desc > 0 ? " #{item.label}" : item.label}"
         end
       end
 
