@@ -7,7 +7,7 @@ module Plan
     # Create a new item
     def initialize(label, finished = nil)
       @label = label.strip
-      @finished = finished
+      @finished = finished.is_a?(Fixnum) ? Time.at(finished) : nil
       @children = []
     end
 
@@ -98,7 +98,7 @@ module Plan
     def dump
       data = {}
       data['label'] = label
-      data['finished'] = finished
+      data['finished'] = finished.nil? ? nil : finished.to_i
       data['children'] = children.map(&:dump)
       data['hidden'] = true if hidden?
       data

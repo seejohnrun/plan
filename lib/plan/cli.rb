@@ -6,7 +6,6 @@ module Plan
 
     class << self
 
-      # TODO colors
       def run(args)
         begin
           command args.first, args[1..-1]
@@ -108,6 +107,7 @@ module Plan
       private
 
       DATA_STORE = ENV['PLAN_DATA_PATH'] || "#{ENV['HOME']}/plan"
+      DATE_FORMAT = '%b. %e, %Y %l:%M %P'
 
       def unknown_command(cmd)
         raise Plan::Advice.new "unknown command: #{cmd}. try `plan help` for options."
@@ -130,7 +130,7 @@ module Plan
       # output an individual item
       def print_item(item, desc = 0)
         if item.finished?
-          puts "\e[1;30m#{'-' * desc}#{desc > 0 ? " #{item.label}" : item.label} \e[1;31m(finished @ #{item.finished})\e[0m"
+          puts "\e[1;30m#{'-' * desc}#{desc > 0 ? " #{item.label}" : item.label} \e[1;31m(finished @ #{item.finished.strftime(DATE_FORMAT)})\e[0m"
         else
           puts "\e[1;30m#{'-' * desc}\e[0m#{desc > 0 ? " #{item.label}" : item.label}"
         end
