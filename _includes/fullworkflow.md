@@ -3,7 +3,6 @@
 _Plan_ is organized hierarchically, which just means that your list of TODOs is made of items and sub-items, nested as deeply as you'd like.  To add an item, we use `plan create`.  Let's add a group for things that we need to do at home:
 
 {% highlight bash %}
-# create an item
 $ plan create home
 plan
 -- home
