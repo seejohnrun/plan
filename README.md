@@ -99,7 +99,7 @@ open-source
 By default, `plan` stores its data in `~/plan` (`$HOME/plan`) - to change that just export an environmet variable called `PLAN_DATA_PATH` with the path you want, like:
 
 ``` bash
-$ export PLAN_DATA_PATH="/some/location"
+$ export PLAN_DATA_PATH="/some/location/planfile"
 ```
 
 ## Author
