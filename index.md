@@ -14,4 +14,4 @@ author:
 
 -----
 
-{% include fullworkflow.markdown %}
+{% include fullworkflow.md %}
