@@ -1,3 +1,4 @@
+require 'rubygems'
 require 'json'
 
 module Plan
@@ -61,7 +62,7 @@ module Plan
       # Mark a task or group of tasks as "unfinished"
       def unfinish(paths)
         if paths.empty?
-          raise Plan::Advice.new 'please drill down to a level to unfinish'
+          raise Plan::Advice.new('please drill down to a level to unfinish')
         end
         # go to the right depth and unfinish
         item = path_tree.descend(paths)
@@ -74,7 +75,7 @@ module Plan
       # Mark a task or group of tasks as "finished"
       def finish(paths)
         if paths.empty?
-          raise Plan::Advice.new 'please drill down to a level to finish'
+          raise Plan::Advice.new('please drill down to a level to finish')
         end
         # descend and finish
         item = path_tree.descend(paths)
@@ -88,7 +89,7 @@ module Plan
       def list(paths)
         item = path_tree.descend(paths)
         if item.visible_child_count == 0
-          raise Plan::Advice.new 'no events here - create some with `plan create`'
+          raise Plan::Advice.new('no events here - create some with `plan create`')
         end
         print_depth item
       end
@@ -96,13 +97,13 @@ module Plan
       # create a new todo
       def create(paths)
         if paths.empty?
-          raise Plan::Advice.new 'please provide something to create'
+          raise Plan::Advice.new('please provide something to create')
         end
         # descend to the right depth
         item = path_tree.descend(paths[0..-2])
         # and then create
         if item.children.any? { |c| !c.hidden? && c.has_label?(paths[-1]) }
-          raise Plan::Advice.new "duplicate entry at level: #{paths[-1]}"
+          raise Plan::Advice.new("duplicate entry at level: #{paths[-1]}")
         else
           item.children << Item.new(paths[-1])
           save_path_tree
@@ -117,7 +118,7 @@ module Plan
       DATE_FORMAT = '%b. %e, %Y %l:%M %P'
 
       def unknown_command(cmd)
-        raise Plan::Advice.new "unknown command: #{cmd}. try `plan help` for options."
+        raise Plan::Advice.new("unknown command: #{cmd}. try `plan help` for options.")
       end
 
       # print the item and its descendents

@@ -5,6 +5,7 @@ spec = Gem::Specification.new do |s|
   s.name = 'plan'  
   s.author = 'John Crepezzi'
   s.add_development_dependency('rspec')
+  s.add_dependency('json')
   s.description = 'plan is a simple command-line todo-list manager'
   s.email = 'john.crepezzi@gmail.com'
   s.files = Dir['lib/**/*.rb', 'bin/plan']

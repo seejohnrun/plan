@@ -38,7 +38,7 @@ describe Plan::Item do
       plan.children << Plan::Item.new('hello2')
       lambda do
         plan.descend(['hello'])
-      end.should raise_error Plan::Advice
+      end.should raise_error(Plan::Advice)
     end
 
     it 'should be able to descend two levels deep' do
@@ -52,7 +52,7 @@ describe Plan::Item do
       plan = Plan::Item.new 'hello'
       lambda do
         plan.descend(['what'])
-      end.should raise_error Plan::Advice
+      end.should raise_error(Plan::Advice)
     end
 
   end
@@ -78,13 +78,13 @@ describe Plan::Item do
       plan = Plan::Item.new 'hello'
       plan.children << Plan::Item.new('hello')
       plan = Plan::Item.load plan.dump
-      plan.children.count.should == 1
+      plan.children.size.should == 1
     end
 
     it 'should work with a finished time' do
       plan = Plan::Item.new 'hello', 0
       plan = Plan::Item.load plan.dump
-      plan.finished.should be_a Time
+      plan.finished.should be_a(Time)
     end
 
     it 'should work with a nil finished time' do
@@ -111,7 +111,7 @@ describe Plan::Item do
 
     it 'should turn into a time on instantiation' do
       plan = Plan::Item.new 'hello', 0
-      plan.finished.should be_a Time
+      plan.finished.should be_a(Time)
     end
 
   end
@@ -120,7 +120,7 @@ describe Plan::Item do
 
     it 'should be able to loda an item from a hash' do
       plan = Plan::Item.load 'label' => 'hello'
-      plan.should be_a Plan::Item
+      plan.should be_a(Plan::Item)
     end
 
   end
@@ -129,7 +129,7 @@ describe Plan::Item do
 
     it 'should dump an item to a hash' do
       plan = Plan::Item.new 'hello'
-      plan.dump.should be_a Hash
+      plan.dump.should be_a(Hash)
     end
 
   end
@@ -220,8 +220,8 @@ describe Plan::Item do
       plan.children << Plan::Item.new('hello')
       plan.finish!
       times = [plan.finished]
-      times.concat plan.children.map(&:finished)
-      times.uniq.count.should == 1
+      times.concat plan.children.map { |c| c.finished }
+      times.uniq.size.should == 1
     end
 
   end
@@ -270,17 +270,17 @@ describe Plan::Item do
 
     it 'should respond true when the one in question is a subset of the real label' do
       plan = Plan::Item.new 'hello'
-      plan.should have_label_like 'hell'
+      plan.should have_label_like('hell')
     end
 
     it 'should respond true when the one in question is a case-insensitive subset of the real label' do
       plan = Plan::Item.new 'hello'
-      plan.should have_label_like 'HELL'
+      plan.should have_label_like('HELL')
     end
 
     it 'should return true for an exact match' do
       plan = Plan::Item.new 'hello'
-      plan.should have_label_like 'hello'
+      plan.should have_label_like('hello')
     end
 
   end
@@ -289,12 +289,12 @@ describe Plan::Item do
 
     it 'should respond true regardless of case' do
       plan = Plan::Item.new 'hello'
-      plan.should have_label 'HELLO'
+      plan.should have_label('HELLO')
     end
 
     it 'should respond false for different labels' do
       plan = Plan::Item.new 'hello'
-      plan.should_not have_label 'HELP'
+      plan.should_not have_label('HELP')
     end
 
   end

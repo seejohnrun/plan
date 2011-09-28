@@ -27,7 +27,7 @@ module Plan
 
     # count of the visible children
     def visible_child_count
-      children.count { |c| !c.hidden? }
+      children.select { |c| !c.hidden? }.size
     end
 
     # remove all finished items from this tree, by hiding them
@@ -73,18 +73,19 @@ module Plan
         lines = []
         lines << "no match for #{paths.first}"
         unless children.empty?
-          lines << "available options are: #{children.reject(&:hidden?).map(&:label).join(', ')}"
+          avail = children.map { |c| c.label unless c.hidden? }.compact
+          lines << "available options are: #{avail.join(', ')}"
         end
-        raise Plan::Advice.new *lines
+        raise Plan::Advice.new(*lines)
       end
       # give an error if we have too many matches
-      if next_items.count > 1
+      if next_items.size > 1
         lines = []
         lines << "ambiguous match for '#{paths.first}' - please choose one of:"
         next_items.each do |np|
           lines << "* #{np.label}"
         end
-        raise Plan::Advice.new *lines
+        raise Plan::Advice.new(*lines)
       end 
       # and off we go, continuing to descent
       next_items.first.descend(paths[1..-1])
@@ -104,7 +105,7 @@ module Plan
       data = {}
       data['label'] = label
       data['finished'] = finished.nil? ? nil : finished.to_i
-      data['children'] = children.map(&:dump)
+      data['children'] = children.map { |c| c.dump }
       data['hidden'] = true if hidden?
       data
     end
